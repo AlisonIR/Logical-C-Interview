@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Image } from 'react-native';
 import { useFetchDataQuery } from '../services/api';
+import { RouteProp, useRoute } from '@react-navigation/native';
 
-const PersonDetails: React.FC = () => {
+interface PersonDetailsProps {
+  route: RouteProp<{ PersonDetails: { personData: Data } }, 'PersonDetails'>;
+}
+
+const PersonDetails: React.FC<PersonDetailsProps> = () => {
   const { data, isLoading, isError } = useFetchDataQuery();
+  const route = useRoute<RouteProp<{ PersonDetails: { personData: Data } }, 'PersonDetails'>>();
 
-  useEffect(() => {
-    console.log('Data:', data);
-    console.log('Is Loading:', isLoading);
-    console.log('Is Error:', isError);
-  }, [data, isLoading, isError]);
+  const person = route.params?.personData || null;
 
   if (isLoading) {
     return (
@@ -26,8 +28,6 @@ const PersonDetails: React.FC = () => {
       </View>
     );
   }
-
-  const person = data ? data[0] : null;
 
   if (!person) {
     return (
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   detailsContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
   },
   label: {
@@ -78,14 +78,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   image: {
-    width: 150, 
-    height: 150, 
-    marginRight: 20, 
+    width: 150,
+    height: 150,
+    marginRight: 20,
   },
   textContainer: {
-    flex: 1, 
+    flex: 1,
   },
 });
 
 export default PersonDetails;
-

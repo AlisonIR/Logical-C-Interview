@@ -48,7 +48,7 @@ const PersonList: React.FC = () => {
       {filteredData.map((person: Data, index: number) => (
         <TouchableOpacity
           key={index}
-          onPress={() => navigation.navigate('PersonDetails')}
+          onPress={() => navigation.navigate('PersonDetails', { personData: person })}
           style={styles.personContainer}
         >
           <Image source={{ uri: person.avatar }} style={styles.image} />
@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
 });
 
 export default PersonList;
+
 
 
 
