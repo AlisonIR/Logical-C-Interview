@@ -10,6 +10,7 @@ const AppNavigator = () => {
     <Stack.Navigator>
       <Stack.Screen name="PersonList" component={PersonList} />
       <Stack.Screen name="PersonDetails" component={PersonDetails} />
+      
     </Stack.Navigator>
   );
 };

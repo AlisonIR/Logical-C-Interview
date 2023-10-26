@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
 import { Data } from '../types/types';
 import { useNavigation } from '@react-navigation/native';
 import SearchBar from '../components/SearchBar';
@@ -14,10 +14,18 @@ const PersonList: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      // Filtrar los datos en función del término de búsqueda
-      const filtered = data.filter((person) =>
-        person.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const lowerSearchTerm = searchTerm.toLowerCase();
+      const filtered = data.filter((person) => {
+        const personName = person.name?.toLowerCase() || '';
+        const personCity = (person.address?.city || '').toLowerCase();
+        const personState = (person.address?.state || '').toLowerCase();
+
+        return (
+          personName.includes(lowerSearchTerm) ||
+          personCity.includes(lowerSearchTerm) ||
+          personState.includes(lowerSearchTerm)
+        );
+      });
       setFilteredData(filtered);
     }
   }, [data, searchTerm]);
@@ -30,48 +38,72 @@ const PersonList: React.FC = () => {
     return <Text>Error: No se pudieron cargar los datos.</Text>;
   }
 
-  const handleSearch = () => {
-    // La búsqueda se realiza en tiempo real a medida que el usuario ingresa el término
-    // No es necesario realizar una nueva petición a la API
-    // Los datos ya están en el estado local
+  const handleSearch = (text: string) => {
+    setSearchTerm(text);
   };
 
   return (
-    <View>
-      <SearchBar onSearchTermChange={setSearchTerm} onSearch={handleSearch} />
+    <ScrollView contentContainerStyle={styles.container}>
+      <SearchBar onSearchTermChange={handleSearch} />
       {filteredData.map((person: Data, index: number) => (
         <TouchableOpacity
           key={index}
           onPress={() => navigation.navigate('PersonDetails')}
+          style={styles.personContainer}
         >
           <Image source={{ uri: person.avatar }} style={styles.image} />
-          <Text style={styles.textName}>Name: {person.name}</Text>
-          <Text>Phone Number: {person.phoneNumber}</Text>
+          <View style={styles.textContainer}>
+            <Text style={styles.textName}>Name: {person.name || 'N/A'}</Text>
+            <Text style={styles.textPhone}>Phone Number: {person.phoneNumber || 'N/A'}</Text>
+          </View>
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  personContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+  },
   image: {
     width: 50,
     height: 50,
     borderRadius: 25,
+    marginRight: 20,
+  },
+  textContainer: {
+    flex: 1,
   },
   textName: {
     fontSize: 17,
-    marginLeft: 10,
     fontWeight: '600',
   },
-  textEmail: {
+  textPhone: {
     fontSize: 14,
-    marginLeft: 10,
     color: 'grey',
   },
 });
 
 export default PersonList;
+
+
+
+
+
+
+
 
 
 
