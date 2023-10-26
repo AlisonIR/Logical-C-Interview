@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Image } from 'react-native';
 import { useFetchDataQuery } from '../services/api';
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { Data } from '../types/types';
 
 interface PersonDetailsProps {
   route: RouteProp<{ PersonDetails: { personData: Data } }, 'PersonDetails'>;
@@ -10,8 +11,10 @@ interface PersonDetailsProps {
 const PersonDetails: React.FC<PersonDetailsProps> = () => {
   const { data, isLoading, isError } = useFetchDataQuery();
   const route = useRoute<RouteProp<{ PersonDetails: { personData: Data } }, 'PersonDetails'>>();
-
+ 
   const person = route.params?.personData || null;
+  console.log(person)
+  
 
   if (isLoading) {
     return (
