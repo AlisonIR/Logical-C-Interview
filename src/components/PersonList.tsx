@@ -48,10 +48,12 @@ const PersonList: React.FC = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity onPress={openFilters} style={styles.filterButton}>
-        <Text style={styles.filterButtonText}>Filtros</Text>
-      </TouchableOpacity>
-      <SearchBar onSearchTermChange={handleSearch} />
+      <View style={styles.navbar}>
+        <SearchBar onSearchTermChange={handleSearch} />
+        <TouchableOpacity onPress={openFilters} style={styles.filterButton}>
+          <Text style={styles.filterButtonText}>Filtros</Text>
+        </TouchableOpacity>
+      </View>
       {filteredData.map((person: Data, index: number) => (
         <TouchableOpacity
           key={index}
@@ -74,12 +76,22 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
   },
+  navbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', 
+    marginHorizontal: 20,
+    marginTop: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    paddingHorizontal: 10, 
+  },
   filterButton: {
     backgroundColor: '#56ADAD',
     padding: 10,
     borderRadius: 10,
-    margin: 10,
-    alignSelf: 'flex-start',
+    marginTop: 10,
+    marginRight: 15,
   },
   filterButtonText: {
     color: 'white',
@@ -115,6 +127,9 @@ const styles = StyleSheet.create({
 });
 
 export default PersonList;
+
+
+
 
 
 

@@ -13,7 +13,7 @@ const PersonDetails: React.FC<PersonDetailsProps> = () => {
   const route = useRoute<RouteProp<{ PersonDetails: { personData: Data } }, 'PersonDetails'>>();
  
   const person = route.params?.personData || null;
-  console.log(person)
+
   
 
   if (isLoading) {
