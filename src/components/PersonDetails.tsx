@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { useFetchDataQuery } from '../services/api';
 
-//comentario para push
+
 const PersonDetails: React.FC = () => {
   const { data, isLoading, isError } = useFetchDataQuery();
 

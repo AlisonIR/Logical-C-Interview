@@ -8,6 +8,7 @@ export const dataApi = createApi({
       query: () => 'persons', 
       transformResponse: (response: { persons: Data[] }) => response.persons, 
     }),
+    
   }),
 });
 
