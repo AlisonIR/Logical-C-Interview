@@ -1,39 +1,49 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import { useFetchDataQuery } from '../services/api';
 import { Data } from '../types/types';
+import { useNavigation } from '@react-navigation/native';
+import  SearchBar  from '../components/SearchBar';
 
-const PersonList: React.FC = ({ navigation }: any) => {
-  const { data, isFetching } = useFetchDataQuery();
-  console.log(data)
-  if (isFetching) {
-    return <Text>Cargando...</Text>;
+const PersonList: React.FC = () => {
+  const { data, isLoading, isError } = useFetchDataQuery();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    console.log('Data:', data);
+    console.log('Is Loading:', isLoading);
+    console.log('Is Error:', isError);
+  }, [data, isLoading, isError]);
+
+  if (isLoading) {
+    return <ActivityIndicator size="large" />;
   }
 
-  if (!data) {
-    return null;
+  if (isError) {
+    return <Text>Error: No se pudieron cargar los datos.</Text>;
   }
 
   return (
     <View>
-      <Text>Lista de Personas</Text>
-      <View>
-        {data.map((person: Data, index: number) => (
-          <View key={index}>
-            <Button
-              title={person.name.title + ' ' + person.name.first + ' ' + person.name.last}
-              onPress={() => navigation.navigate('PersonDetails', { person })}
-            />
-          </View>
-        ))}
-      </View>
+      <SearchBar/>
+      {data?.map((person: Data, index: number) => (
+        <TouchableOpacity
+          key={index}
+          onPress={() => navigation.navigate('PersonDetails')}
+        >
+          <Image
+            source={{ uri: person.avatar }}
+            style={{ width: 100, height: 100 }} 
+          />
+          <Text>Name: {person.name}</Text>
+          <Text>Phone Number: {person.phoneNumber}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };
 
 export default PersonList;
-
-
 
 
 

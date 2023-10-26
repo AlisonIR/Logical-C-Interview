@@ -1,12 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Data } from '../types/types'; // Asegúrate de que la ruta sea correcta
+import { Data } from '../types/types';
 
 export const dataApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://randomuser.me/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://gateway.e-commander.com/v1/health/' }), 
   endpoints: (builder) => ({
-    fetchData: builder.query<Data[], void>({ 
-      query: () => 'results',
-      transformResponse: (response: { results: Data[] }) => response.results,
+    fetchData: builder.query<Data[], void>({
+      query: () => 'persons', 
+      transformResponse: (response: { persons: Data[] }) => response.persons, 
     }),
   }),
 });
